@@ -1,6 +1,8 @@
 # Continuous K6 Performance Tests on K8s
 
-Continuous K6 performance and load tests on Kubernetes.
+Continuous K6 performance and load tests on Kubernetes. We will spin up an InfluxDB to
+store our load test data and Grafana to display. The K6 load test will continuously be
+executed using a CronJob.
 
 ## Usage with plain YAML
 
@@ -11,6 +13,9 @@ $ kubectl apply -f continuous-nginx.yaml
 # next you can deploy the K6 stack with InfluxDB and Grafana
 $ kubectl apply -f continuous-k6k8s.yaml
 ```
+
+## Usage with Pulumi
+
 
 ## Using custom K6 load test Docker image
 
