@@ -4,8 +4,10 @@ import http from "k6/http";
 export let options = {
     vus: 10,
     duration: '30s',
+    batchPerHost: 4,
+    insecureSkipTLSVerify: true,
     thresholds: {
-        'http_req_duration{kind:html}': ["avg<=500"],
+        'http_req_duration{kind:html}': ['avg<=250', 'p(95)<500'],
     }
 };
 
