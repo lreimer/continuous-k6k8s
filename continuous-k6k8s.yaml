@@ -93,10 +93,12 @@ metadata:
   name: k6-scripts
 data:
   nginx-test.js: |
-    import {check, group} from "k6";
+    import {check, sleep, group} from "k6";
     import http from "k6/http";
     
     export let options = {
+        vus: 10,
+        duration: '30s',
         thresholds: {
             'http_req_duration{kind:html}': ["avg<=500"],
         }
@@ -104,10 +106,41 @@ data:
     
     export default function () {
         group("static", function () {
-            check(http.get("http://nginx-service:80", {
+            check(http.get(`http://${__ENV.TARGET_HOSTNAME}:80`, {
                 tags: {'kind': 'html'},
             }), {
                 "status is 200": (res) => res.status === 200,
             });
         });
+        sleep(1);
     }
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: k6-nginx-test
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: k6
+              image: loadimpact/k6:0.28.0
+              env:
+                - name: K6_OUT
+                  value: influxdb=http://influxdb-service:8086/k6
+                - name: TARGET_HOSTNAME
+                  value: nginx-service
+              args:
+                - run
+                - /scripts/nginx-test.js
+              volumeMounts:
+                - name: scripts-vol
+                  mountPath: /scripts
+          restartPolicy: OnFailure
+          volumes:
+            - name: scripts-vol
+              configMap:
+                name: k6-scripts
