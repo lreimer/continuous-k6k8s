@@ -19,8 +19,26 @@ $ kubectl apply -f continuous-k6k8s.yaml
 $ open http://localhost:3000
 ```
 
+## Create retention policy for InfluxDB
+
+If you run the load tests continuously, you may want to create a retention policy to cleanup the test data from time to time.
+
+```bash
+# connect to the influx pod
+$ kubectl exec -it pod/influxdb -- /bin/sh
+
+$ influx
+$ create retention policy "k6_1d" on "k6" duration 1d replication 1 default
+$ exit
+```
+
 ## Usage with Pulumi
 
+Just for fun, I also created Pulumi infrastructure as code to create the Continuous K6 load test stack.
+
+```bash
+$ 
+```
 
 ## Adhoc K6 load test with custom Docker image
 
