@@ -12,6 +12,11 @@ $ kubectl apply -f continuous-nginx.yaml
 
 # next you can deploy the K6 stack with InfluxDB and Grafana
 $ kubectl apply -f continuous-k6k8s.yaml
+
+# open Grafana and import on of these K6 load test dashboards
+# - see https://grafana.com/dashboards/2587
+# - see https://grafana.com/grafana/dashboards/4411
+$ open http://localhost:3000
 ```
 
 ## Usage with Pulumi
