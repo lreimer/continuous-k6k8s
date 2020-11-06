@@ -43,6 +43,11 @@ $ kube2pulumi typescript -f continuous-k6k8s.yaml
 
 # and fire up the K6 stack
 $ pulumi up
+
+# open Grafana and import on of these K6 load test dashboards
+# - see https://grafana.com/dashboards/2587
+# - see https://grafana.com/grafana/dashboards/4411
+$ open http://localhost:3000
 ```
 
 ## Adhoc K6 load test with custom Docker image
