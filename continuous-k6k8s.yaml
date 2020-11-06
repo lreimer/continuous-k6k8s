@@ -141,7 +141,7 @@ spec:
               volumeMounts:
                 - name: scripts-vol
                   mountPath: /scripts
-          restartPolicy: OnFailure
+          restartPolicy: Never
           volumes:
             - name: scripts-vol
               configMap:

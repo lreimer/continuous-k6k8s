@@ -7,10 +7,9 @@ const influxdbService = new kubernetes.core.v1.Service("influxdb-service", {
     },
     spec: {
         type: "ClusterIP",
-        ports: [{
-            port: 8086,
-            protocol: "TCP",
-        }],
+        ports: [
+            { port: 8086, protocol: "TCP" }
+        ],
         selector: {
             app: "influxdb",
         },
@@ -26,8 +25,12 @@ const influxdbPod = new kubernetes.core.v1.Pod("influxdb", {
         containers: [{
             name: "influxdb",
             image: "influxdb:1.8.3-alpine",
-            env: [{ name: "INFLUXDB_DB", value: "k6" }],
-            ports: [{ name: "web", containerPort: 8086 }],
+            env: [
+                { name: "INFLUXDB_DB", value: "k6" }
+            ],
+            ports: [
+                { name: "web", containerPort: 8086 }
+            ]
         }]
     }
 });
@@ -38,10 +41,9 @@ const grafanaService = new kubernetes.core.v1.Service("grafana-service", {
     },
     spec: {
         type: "LoadBalancer",
-        ports: [{
-            port: 3000,
-            protocol: "TCP",
-        }],
+        ports: [
+            { port: 3000, protocol: "TCP" }
+        ],
         selector: {
             app: "grafana",
         }
@@ -71,7 +73,9 @@ const grafanaPod = new kubernetes.core.v1.Pod("grafana", {
                 { name: "GF_AUTH_ANONYMOUS_ENABLED", value: "true" },
                 { name: "GF_AUTH_BASIC_ENABLED", value: "false" },
             ],
-            ports: [{name: "web", containerPort: 3000}],
+            ports: [
+                { name: "web", containerPort: 3000 }
+            ],
             volumeMounts: [{
                 name: "datasource-vol",
                 mountPath: "/etc/grafana/provisioning/datasources/",
@@ -82,10 +86,9 @@ const grafanaPod = new kubernetes.core.v1.Pod("grafana", {
             name: "datasource-vol",
             configMap: {
                 name: datasourceConfigMap.metadata.name,
-                items: [{
-                    key: "grafana-datasource.yaml",
-                    path: "datasource.yaml",
-                }]
+                items: [
+                    { key: "grafana-datasource.yaml", path: "datasource.yaml" }
+                ]
             }
         }]
     }
@@ -118,12 +121,11 @@ const testCronJob = new kubernetes.batch.v1beta1.CronJob("k6-nginx-test", {
                                 { name: "TARGET_HOSTNAME", value: "nginx-service" },
                             ],
                             args: ["run", "/scripts/nginx-test.js"],
-                            volumeMounts: [{
-                                name: "scripts-vol",
-                                mountPath: "/scripts",
-                            }],
+                            volumeMounts: [
+                                { name: "scripts-vol", mountPath: "/scripts" }
+                            ],
                         }],
-                        restartPolicy: "OnFailure",
+                        restartPolicy: "Never",
                         volumes: [{
                             name: "scripts-vol",
                             configMap: {

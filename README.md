@@ -37,7 +37,12 @@ $ exit
 Just for fun, I also created Pulumi infrastructure as code to create the Continuous K6 load test stack.
 
 ```bash
-$ 
+# to create the Pulumi code from scratch type this
+$ pulumi new kubernetes-typescript --force
+$ kube2pulumi typescript -f continuous-k6k8s.yaml
+
+# and fire up the K6 stack
+$ pulumi up
 ```
 
 ## Adhoc K6 load test with custom Docker image
