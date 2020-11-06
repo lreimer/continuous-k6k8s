@@ -48,12 +48,12 @@ data:
   grafana-datasource.yaml: |
     apiVersion: 1
     datasources:
-        - name: k6influxdb
-          type: influxdb
-          access: proxy
-          database: k6
-          url: http://influxdb:8086
-          isDefault: true
+      - name: k6influxdb
+        type: influxdb
+        access: proxy
+        database: k6
+        url: http://influxdb-service:8086
+        isDefault: true
 ---
 apiVersion: v1
 kind: Pod
@@ -86,3 +86,28 @@ spec:
         items:
           - key: "grafana-datasource.yaml"
             path: "datasource.yaml"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-scripts
+data:
+  nginx-test.js: |
+    import {check, group} from "k6";
+    import http from "k6/http";
+    
+    export let options = {
+        thresholds: {
+            'http_req_duration{kind:html}': ["avg<=500"],
+        }
+    };
+    
+    export default function () {
+        group("static", function () {
+            check(http.get("http://nginx-service:80", {
+                tags: {'kind': 'html'},
+            }), {
+                "status is 200": (res) => res.status === 200,
+            });
+        });
+    }
