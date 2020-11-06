@@ -1,0 +1,3 @@
+name: continuous-k6k8s
+runtime: nodejs
+description: Continuous K6 performance and load tests on Kubernetes
