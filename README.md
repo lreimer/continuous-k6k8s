@@ -17,7 +17,7 @@ $ kubectl apply -f continuous-k6k8s.yaml
 ## Usage with Pulumi
 
 
-## Using custom K6 load test Docker image
+## Adhoc K6 load test with custom Docker image
 
 ```bash
 # build and push the K6 load test image
