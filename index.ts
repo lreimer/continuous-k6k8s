@@ -24,7 +24,7 @@ const influxdbPod = new kubernetes.core.v1.Pod("influxdb", {
     spec: {
         containers: [{
             name: "influxdb",
-            image: "influxdb:1.8.3-alpine",
+            image: "influxdb:1.8-alpine",
             env: [
                 { name: "INFLUXDB_DB", value: "k6" }
             ],
@@ -67,7 +67,7 @@ const grafanaPod = new kubernetes.core.v1.Pod("grafana", {
     spec: {
         containers: [{
             name: "grafana",
-            image: "grafana/grafana:7.3.1",
+            image: "grafana/grafana:7.4.0",
             env: [
                 { name: "GF_AUTH_ANONYMOUS_ORG_ROLE", value: "Admin" },
                 { name: "GF_AUTH_ANONYMOUS_ENABLED", value: "true" },
@@ -115,7 +115,7 @@ const testCronJob = new kubernetes.batch.v1beta1.CronJob("k6-nginx-test", {
                     spec: {
                         containers: [{
                             name: "k6",
-                            image: "loadimpact/k6:0.28.0",
+                            image: "loadimpact/k6:0.30.0",
                             env: [
                                 { name: "K6_OUT", value: "influxdb=http://influxdb-service:8086/k6" },
                                 { name: "TARGET_HOSTNAME", value: "nginx-service" },
