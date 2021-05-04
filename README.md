@@ -8,10 +8,11 @@ executed using a CronJob.
 
 ```bash
 # first we deploy the demo application deployment
-$ kubectl apply -f continuous-nginx.yaml
+$ kubectl create namespace k6
+$ kubectl apply -f continuous-nginx.yaml -n k6
 
 # next you can deploy the K6 stack with InfluxDB and Grafana
-$ kubectl apply -f continuous-k6k8s.yaml
+$ kubectl apply -f continuous-k6k8s.yaml -n k6
 
 # open Grafana and import on of these K6 load test dashboards
 # - see https://grafana.com/dashboards/2587
