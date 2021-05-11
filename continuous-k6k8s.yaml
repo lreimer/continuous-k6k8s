@@ -134,7 +134,7 @@ spec:
                 - name: K6_OUT
                   value: influxdb=http://influxdb-service:8086/k6
                 - name: TARGET_HOSTNAME
-                  value: nginx-service
+                  value: nginx-service.default.svc.cluster.local
               args:
                 - run
                 - /scripts/nginx-test.js
